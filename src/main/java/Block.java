@@ -1,3 +1,6 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 
 public class Block {
@@ -7,6 +10,7 @@ public class Block {
     private String data; //our data will be a simple message.
     private long timeStamp; //as number of milliseconds since 1/1/1970.
     private int nonce;
+    public static Logger log = LoggerFactory.getLogger(Block.class);
 
     public Block(String data,String previousHash ) {
         this.data = data;
@@ -18,11 +22,8 @@ public class Block {
     //Calculate new hash based on blocks contents
     public String calculateHash() {
         String calculatedhash = StringUtil.applySha256(
-                previousHash +
-                        Long.toString(timeStamp) +
-                        Integer.toString(nonce) +
-                        data
-        );
+                previousHash + Long.toString(timeStamp) +
+                        Integer.toString(nonce) + data );
         return calculatedhash;
     }
 
@@ -32,6 +33,6 @@ public class Block {
             nonce ++;
             hash = calculateHash();
         }
-        System.out.println("Block Mined!!! : " + hash);
+        log.info("Block Mined!!! : " + hash);
     }
 }
